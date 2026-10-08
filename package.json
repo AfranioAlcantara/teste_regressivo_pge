@@ -21,5 +21,9 @@
     "@badeball/cypress-cucumber-preprocessor": "^28.0.0",
     "@bahmutov/cypress-esbuild-preprocessor": "^2.2.8",
     "esbuild": "^0.28.2"
+  },
+  "allowScripts": {
+    "cypress@16.1.1": true,
+    "esbuild@0.28.2": true
   }
 }
