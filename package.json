@@ -1,0 +1,25 @@
+{
+  "name": "teste-regressivo-pge",
+  "private": true,
+  "scripts": {
+    "cy:open": "cypress open --browser chrome",
+    "cy:run": "cypress run --browser chrome"
+  },
+  "cypress-cucumber-preprocessor": {
+    "stepDefinitions": "cypress/support/step_definitions/**/*.js",
+    "filterSpecs": true,
+    "omitFiltered": true,
+    "json": {
+      "enabled": true,
+      "output": "cypress/reports/cucumber-report.json"
+    }
+  },
+  "dependencies": {
+    "cypress": "^16.1.1"
+  },
+  "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^28.0.0",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.8",
+    "esbuild": "^0.28.2"
+  }
+}

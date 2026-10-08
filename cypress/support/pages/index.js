@@ -1,0 +1,9 @@
+export { default as loginPage } from "./LoginPage";
+export { default as homePage } from "./HomePage";
+export { default as atribuicoesPage } from "./AtribuicoesPage";
+export { default as novaAtribuicaoPage } from "./NovaAtribuicaoPage";
+export { default as editarAtribuicaoPage } from "./EditarAtribuicaoPage";
+export { default as ativoPage } from "./AtivoPage";
+export { default as gerarTermosPage } from "./GerarTermosPage";
+export { default as movimentacaoPage } from "./MovimentacaoPage";
+export { default as atribuicoesPorAreaPage } from "./AtribuicoesPorAreaPage";

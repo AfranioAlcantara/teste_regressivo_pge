@@ -1,0 +1,63 @@
+name: CiCd
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: Tag Cucumber para executar
+        required: true
+        default: '@P1'
+        type: choice
+        options:
+          - '@P1'
+          - '@P2'
+          - '@P3'
+          
+      tags_custom:
+        description: Expressao customizada opcional (ex. @CT-HU01-01 ou @P1 and not @CT-LOGIN-02). Se preenchida, substitui a tag acima.
+        required: false
+        type: string
+
+jobs:
+  testes-cypress:
+    name: Cypress ${{ github.event.inputs.tags_custom || github.event.inputs.tags || '@P1' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      TAGS: ${{ github.event.inputs.tags_custom || github.event.inputs.tags || '@P1' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar credenciais do QA
+        env:
+          USUARIO: ${{ secrets.USUARIO }}
+          SENHA: ${{ secrets.SENHA }}
+        run: |
+          if [ -z "$USUARIO" ] || [ -z "$SENHA" ]; then
+            echo "Cadastre os secrets USUARIO e SENHA no repositório, com os mesmos valores do cypress.env.json."
+            exit 1
+          fi
+          python3 -c 'import json, os; open("cypress.env.json", "w", encoding="utf-8").write(json.dumps({"usuario": os.environ["USUARIO"], "senha": os.environ["SENHA"]}))'
+
+      - name: Instalar dependencias e executar Cypress
+        uses: cypress-io/github-action@v7
+        with:
+          browser: chrome
+          expose: "tags=${{ env.TAGS }}"
+
+      - name: Publicar evidencias em caso de falha
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-evidencias
+          path: |
+            cypress/screenshots
+            cypress/videos
+            cypress/reports
+          if-no-files-found: ignore
